@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600;700&display=swap');
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --colorHighight: #f7ad19;
+    --colorMain: #9fe7f5;
+    --colorbtn: #053f5c;
+    --colorbtnhover: #0b6c9cfa;
+}
+
+body {
+    background-color: #f2f2f2;
+}
+
+.navbar h1 {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.footer {
+    background-color: #333;
+    color: #d8d8d8;
+    padding: 15px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.footer h5 {
+    font-weight: 400;
+}
+
+.main {
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 40%;
+    margin: 10px auto;
+    color: var(--colorMain);
+}
+
+
+.main .add-book {
+    width: 95%;
+    background-color: #333333d7;
+    border-radius: 8px;
+    padding: 18px 2px;
+}
+
+.main .add-book .heading h4 {
+    font-weight: 400;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--colorHighight);
+    padding: 10px 5px;
+}
+
+.add-book .input-form {
+    margin-top: 20px;
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+
+.add-book .input-form .input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-form:last-child {
+    margin-top: 20px;
+}
+
+.input-form .input-group label {
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.input-form:not(:last-child) .input-group input {
+    padding: 8px 4px;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 1px 1px 1px #9a9a9a6a;
+}
+
+.input-group input:focus {
+    outline: none
+}
+
+.input-group span>input {
+    border: none;
+    outline: none;
+    margin-bottom: 12px;
+}
+
+.input-group button {
+    padding: 8px 2px;
+    cursor: pointer;
+    background-color: var(--colorbtn);
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    color: #f2f2f2;
+    font-size: 16px;
+    font-weight: 500;
+    transition: color .7s;
+}
+
+.input-group button:hover {
+    background-color: var(--colorbtnhover);
+}

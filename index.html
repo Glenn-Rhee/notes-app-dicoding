@@ -4,10 +4,46 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Notes App</title>
+    <link rel="stylesheet" href="src/style/style.css" />
   </head>
   <body>
     <header>
-      <nav></nav>
+      <nav class="navbar">
+        <h1>Notes App</h1>
+      </nav>
     </header>
+    <main class="main">
+      <section class="add-book">
+        <form>
+          <div class="heading">
+            <h4>Add new Book</h4>
+          </div>
+          <div class="input-form">
+            <div class="input-group">
+              <label for="title">Title</label>
+              <input type="text" id="title" required autocomplete="off" />
+            </div>
+            <div class="input-group">
+              <label for="penulis">Penulis</label>
+              <input type="text" id="penulis" required autocomplete="off" />
+            </div>
+            <div class="input-group">
+              <label for="tahun">Tahun</label>
+              <input type="text" id="tahun" required autocomplete="off" />
+            </div>
+          </div>
+          <div class="input-form">
+            <div class="input-group">
+              <span>Selesai dibaca <input type="checkbox" /></span>
+              <button>Add new</button>
+            </div>
+          </div>
+        </form>
+      </section>
+    </main>
+    <footer class="footer">
+      <h5>Copyright &copy; 2024 Ariel Rizki</h5>
+    </footer>
+    <script src="src/js/" type="module"></script>
   </body>
 </html>
