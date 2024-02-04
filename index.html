@@ -13,7 +13,7 @@
       </nav>
     </header>
     <main class="main">
-      <section class="add-book">
+      <section class="add-book container">
         <form>
           <div class="heading">
             <h4>Add new Book</h4>
@@ -39,6 +39,79 @@
             </div>
           </div>
         </form>
+      </section>
+      <section class="search-book container">
+        <div class="heading">
+          <h4>Search Books</h4>
+        </div>
+        <div class="input-form">
+          <div class="input-group">
+            <input
+              type="search"
+              id="search"
+              required
+              autocomplete="off"
+              placeholder="Book Title"
+            />
+            <button id="search-btn">Search</button>
+          </div>
+        </div>
+      </section>
+      <section class="book-list container">
+        <div class="heading">
+          <h4>Not Finished Yet</h4>
+        </div>
+        <div class="book-lists">
+          <h4 class="no-data">No Data</h4>
+          <div class="container-card">
+            <div class="card">
+              <h5>Taylor Swift Album</h5>
+              <p>Written by : <span class="written">Taylor Swift</span></p>
+              <p>Year : <span class="year">2020</span></p>
+              <div class="card-control">
+                <button>Mark as read</button>
+                <button>Delete</button>
+              </div>
+            </div>
+            <div class="card">
+              <h5>Taylor Swift Album</h5>
+              <p>Written by : <span class="written">Taylor Swift</span></p>
+              <p>Year : <span class="year">2020</span></p>
+              <div class="card-control">
+                <button>Mark as read</button>
+                <button>Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="book-list container">
+        <div class="heading">
+          <h4>Finished</h4>
+        </div>
+        <div class="book-lists">
+          <h4 class="no-data show-finshed">No Data</h4>
+          <div class="container-card">
+            <div class="card">
+              <h5>Taylor Swift Album</h5>
+              <p>Written by : <span class="written">Taylor Swift</span></p>
+              <p>Year : <span class="year">2020</span></p>
+              <div class="card-control">
+                <button>Mark as unread</button>
+                <button>Delete</button>
+              </div>
+            </div>
+            <div class="card">
+              <h5>Taylor Swift Album</h5>
+              <p>Written by : <span class="written">Taylor Swift</span></p>
+              <p>Year : <span class="year">2020</span></p>
+              <div class="card-control">
+                <button>Mark as unread</button>
+                <button>Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
     <footer class="footer">

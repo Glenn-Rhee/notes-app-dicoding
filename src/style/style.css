@@ -53,14 +53,18 @@ body {
 }
 
 
-.main .add-book {
+.main .container {
     width: 95%;
     background-color: #333333d7;
     border-radius: 8px;
     padding: 18px 2px;
 }
 
-.main .add-book .heading h4 {
+.main .container:not(:first-child) {
+    margin-top: 20px;
+}
+
+.main .container .heading h4 {
     font-weight: 400;
     text-align: center;
     font-size: 24px;
@@ -69,7 +73,7 @@ body {
     padding: 10px 5px;
 }
 
-.add-book .input-form {
+.container .input-form {
     margin-top: 20px;
     width: 90%;
     margin: 0 auto;
@@ -78,7 +82,7 @@ body {
     row-gap: 20px;
 }
 
-.add-book .input-form .input-group {
+.container .input-form .input-group {
     display: flex;
     flex-direction: column;
 }
@@ -92,11 +96,27 @@ body {
     font-size: 18px;
 }
 
-.input-form:not(:last-child) .input-group input {
-    padding: 8px 4px;
+.input-form:not(:last-child) .input-group input,
+.search-book .input-form .input-group input {
+    padding: 8px 6px;
     border-radius: 8px;
     border: none;
     box-shadow: 1px 1px 1px #9a9a9a6a;
+}
+
+.search-book .input-form .input-group {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+}
+
+
+.search-book .input-form .input-group input {
+    width: 75%;
+}
+
+#search-btn {
+    width: 30%;
 }
 
 .input-group input:focus {
@@ -124,4 +144,78 @@ body {
 
 .input-group button:hover {
     background-color: var(--colorbtnhover);
+}
+
+.book-list .book-lists .no-data {
+    color: rgb(204, 0, 0);
+    font-size: 24px;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 20px;
+    display: none;
+}
+
+.book-list .book-lists .no-data.show,
+.book-list .book-lists .no-data.show-finished {
+    display: block;
+}
+
+.container .book-lists {
+    padding: 4px 10px;
+    margin-top: 16px;
+}
+
+.container .book-lists .container-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.container .book-lists .container-card .card {
+    width: 100%;
+    background-color: #dfdfdd;
+    color: black;
+    padding: 6px 8px;
+    box-sizing: border-box;
+    border-radius: 8px;
+}
+
+.container .book-lists .container-card .card h5 {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.container .book-lists .container-card .card p {
+    font-size: 12px;
+    font-weight: 300;
+}
+
+.container .book-lists .container-card .card .card-control {
+    display: flex;
+    margin-top: 10px;
+    column-gap: 10px;
+    position: relative;
+}
+
+.card-control button {
+    border: none;
+    background-color: rgb(1, 171, 1);
+    padding: 4px 6px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    color: rgb(216, 216, 216);
+    transition: background-color .2s;
+}
+
+.card-control button+button {
+    background-color: rgb(170, 0, 0);
+}
+
+.card-control button:hover {
+    background-color: rgb(0, 107, 0);
+}
+
+.card-control button+button:hover {
+    background-color: rgb(83, 0, 0);
 }
