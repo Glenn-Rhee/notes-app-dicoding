@@ -12,34 +12,37 @@
         <h1>Notes App</h1>
       </nav>
     </header>
+
     <main class="main">
       <section class="add-book container">
-        <form>
+        <form id="form-add">
           <div class="heading">
             <h4>Add new Book</h4>
           </div>
           <div class="input-form">
+            <h5 class="error-input"></h5>
             <div class="input-group">
               <label for="title">Title</label>
               <input type="text" id="title" required autocomplete="off" />
             </div>
             <div class="input-group">
-              <label for="penulis">Penulis</label>
+              <label for="penulis">Written by</label>
               <input type="text" id="penulis" required autocomplete="off" />
             </div>
             <div class="input-group">
-              <label for="tahun">Tahun</label>
+              <label for="tahun">Year </label>
               <input type="text" id="tahun" required autocomplete="off" />
             </div>
           </div>
           <div class="input-form">
             <div class="input-group">
-              <span>Selesai dibaca <input type="checkbox" /></span>
-              <button>Add new</button>
+              <span>Mark as read <input type="checkbox" /></span>
+              <button id="add-btn">Add new</button>
             </div>
           </div>
         </form>
       </section>
+
       <section class="search-book container">
         <div class="heading">
           <h4>Search Books</h4>
@@ -57,66 +60,31 @@
           </div>
         </div>
       </section>
-      <section class="book-list container">
+
+      <section class="book-list container" id="section-unfinished">
         <div class="heading">
           <h4>Not Finished Yet</h4>
         </div>
         <div class="book-lists">
-          <h4 class="no-data">No Data</h4>
-          <div class="container-card">
-            <div class="card">
-              <h5>Taylor Swift Album</h5>
-              <p>Written by : <span class="written">Taylor Swift</span></p>
-              <p>Year : <span class="year">2020</span></p>
-              <div class="card-control">
-                <button>Mark as read</button>
-                <button>Delete</button>
-              </div>
-            </div>
-            <div class="card">
-              <h5>Taylor Swift Album</h5>
-              <p>Written by : <span class="written">Taylor Swift</span></p>
-              <p>Year : <span class="year">2020</span></p>
-              <div class="card-control">
-                <button>Mark as read</button>
-                <button>Delete</button>
-              </div>
-            </div>
-          </div>
+          <h4 class="no-data" id="no-data-unfinished">No Data</h4>
+          <div class="container-card" id="card-unfinished"></div>
         </div>
       </section>
-      <section class="book-list container">
+
+      <section class="book-list container" id="section-finished">
         <div class="heading">
           <h4>Finished</h4>
         </div>
         <div class="book-lists">
-          <h4 class="no-data show-finshed">No Data</h4>
-          <div class="container-card">
-            <div class="card">
-              <h5>Taylor Swift Album</h5>
-              <p>Written by : <span class="written">Taylor Swift</span></p>
-              <p>Year : <span class="year">2020</span></p>
-              <div class="card-control">
-                <button>Mark as unread</button>
-                <button>Delete</button>
-              </div>
-            </div>
-            <div class="card">
-              <h5>Taylor Swift Album</h5>
-              <p>Written by : <span class="written">Taylor Swift</span></p>
-              <p>Year : <span class="year">2020</span></p>
-              <div class="card-control">
-                <button>Mark as unread</button>
-                <button>Delete</button>
-              </div>
-            </div>
-          </div>
+          <h4 class="no-data" id="no-data-finished">No Data</h4>
+          <div class="container-card" id="card-finished"></div>
         </div>
       </section>
     </main>
+
     <footer class="footer">
       <h5>Copyright &copy; 2024 Ariel Rizki</h5>
     </footer>
-    <script src="src/js/" type="module"></script>
+    <script src="src/js/main.js"></script>
   </body>
 </html>

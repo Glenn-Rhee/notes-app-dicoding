@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
 header {
     background-color: #333;
@@ -142,6 +142,17 @@ body {
     transition: color .7s;
 }
 
+.add-book .input-form .error-input {
+    color: rgb(138, 0, 0);
+    font-weight: 500;
+    font-size: 20px;
+    display: none;
+}
+
+.add-book .input-form .error-input.show {
+    display: block;
+}
+
 .input-group button:hover {
     background-color: var(--colorbtnhover);
 }
@@ -151,7 +162,6 @@ body {
     font-size: 24px;
     font-weight: 500;
     text-align: center;
-    margin-top: 20px;
     display: none;
 }
 
