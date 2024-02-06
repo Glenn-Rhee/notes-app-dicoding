@@ -4,11 +4,10 @@ const cardUnfinished = document.querySelector("#card-unfinished");
 const containerUnfinished = document.querySelector("#section-unfinished")
 const cardFinished = document.querySelector("#card-finished")
 const containerFinished = document.querySelector("#section-finished");
-const btnDelete = document.querySelector("#btn-delete");
+const btnDelete = document.querySelectorAll(".btn-delete");
 const nullDataUnfinished = document.querySelector("#no-data-unfinished");
 const nullDataFinished = document.querySelector("#no-data-finished");
 const errorInput = document.querySelector(".error-input");
-
 (() => {
     let cards = '';
     let data = getData("data-unfinished");
@@ -31,9 +30,37 @@ const errorInput = document.querySelector(".error-input");
     }
 })()
 
+
+document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("btn-delete")) {
+        const id = e.target.dataset.id;
+        const parentElement = e.target.parentNode.parentNode.parentNode;
+        console.log(parentElement);
+        // const deleted = parentElement.id === "card-unfinished" ? deleteItem("data-unfinished", id) : console.log("finished")
+        // if (!deleted) console.log("Gagal");
+        // window.location.reload()
+    }
+})
+
+function deleteItem(key, id) {
+    const data = JSON.parse(localStorage.getItem(key));
+    console.log(data);
+    const newData = data.filter(d => d.id !== id);
+    console.log(newData);
+    localStorage.setItem(key, JSON.stringify(newData));
+
+}
+
 formAdd.addEventListener("submit", function (e) {
     e.preventDefault();
 
+    if (inputs[0].value === "" || inputs[1].value === "" || inputs[2].value === "") {
+        errorInput.innerHTML = "Title, Author, and year of realease are required!";
+        errorInput.classList.add("show");
+        return
+    }
+
+    errorInput.classList.remove("show")
     const data = {
         id: Date.now(),
         title: inputs[0].value,
@@ -48,7 +75,6 @@ formAdd.addEventListener("submit", function (e) {
         errorInput.classList.add("show")
         return
     }
-
     errorInput.classList.remove("show")
 
     data.isComplete ? saveData(data, "data-finished") : saveData(data, "data-unfinished")
@@ -67,18 +93,45 @@ formAdd.addEventListener("submit", function (e) {
 
 function isRegistered(title, author) {
     const user = title.toLowerCase() + author.toLowerCase();
-    let data = JSON.parse(localStorage.getItem("data-unfinished"));
-    let isRegist = data.find(d => d.title.toLowerCase() + d.author.toLowerCase() === user);
-    if (!isRegist) {
-        data = JSON.parse(localStorage.getItem("data-finished"));
-        isRegist = data.find(d => d.title.toLowerCase() + d.author.toLowerCase() === user)
-        if (isRegist) {
-            return "Already fill on Finished Books"
-        }
+    const dataUnfinished = JSON.parse(localStorage.getItem("data-unfinished"));
+    const dataFinished = JSON.parse(localStorage.getItem("data-finished"));
+    if (!dataUnfinished && !dataFinished) {
         return "No data"
     }
 
-    return "Alredy fill on Unfinished books"
+    if (dataUnfinished) {
+        const isRegist = findUser(dataUnfinished, user)
+        console.log(isRegist);
+        if (isRegist) {
+            return "Data already exist on Unifinished books"
+        }
+
+        if (dataFinished) {
+            const isRegist = findUser(dataFinished, user)
+            if (isRegist) {
+                return "Data already exist on Finished books"
+            }
+
+            return "No data"
+        }
+
+        return "No data"
+    } else {
+        if (dataFinished) {
+            const isRegist = findUser(dataFinished, user)
+            if (isRegist) {
+                return "Data already exist on Finished books"
+            }
+
+            return "No data"
+        }
+
+        return "No data"
+    }
+}
+
+function findUser(data, user) {
+    return data.find(d => d.title.toLowerCase() + d.author.toLowerCase() === user)
 }
 
 function scrollingElement(offsetTop) {
@@ -111,7 +164,7 @@ function setCardUi(data) {
         <p>Year : <span class="year">${data.year}</span></p>
         <div class="card-control">
             <button>Mark as read</button>
-            <button class="btn-delete" data-id="${data.id}/">Delete</button>
+            <button class="btn-delete" data-id="${data.id}">Delete</button>
         </div>
     </div>
     `
