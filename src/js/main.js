@@ -8,50 +8,85 @@ const btnDelete = document.querySelectorAll(".btn-delete");
 const nullDataUnfinished = document.querySelector("#no-data-unfinished");
 const nullDataFinished = document.querySelector("#no-data-finished");
 const errorInput = document.querySelector(".error-input");
+
 (() => {
     let cards = '';
     let data = getData("data-unfinished");
-    if (data) {
-        nullDataUnfinished.classList.remove("show")
-        data.forEach(d => cards += setCardUi(d));
-        cardUnfinished.innerHTML = cards
-    } else {
+
+    if (!data || data.length === 0) {
         nullDataUnfinished.classList.add("show")
+    } else {
+        nullDataUnfinished.classList.remove("show")
+        data.forEach(d => cards += setCardUi(d, "read"));
+        cardUnfinished.innerHTML = cards
     }
 
     cards = '';
     data = getData("data-finished");
-    if (data) {
-        nullDataFinished.classList.remove("show-finished")
-        data.forEach(d => cards += setCardUi(d));
-        cardFinished.innerHTML = cards
-    } else {
+    if (!data || data.length === 0) {
         nullDataFinished.classList.add("show-finished")
+    } else {
+        nullDataFinished.classList.remove("show-finished")
+        data.forEach(d => cards += setCardUi(d, "unred"));
+        cardFinished.innerHTML = cards
     }
 })()
 
 
-document.addEventListener("click", function (e) {
-    if (e.target.classList.contains("btn-delete")) {
-        const id = e.target.dataset.id;
-        const parentElement = e.target.parentNode.parentNode.parentNode;
-        console.log(parentElement);
-        // const deleted = parentElement.id === "card-unfinished" ? deleteItem("data-unfinished", id) : console.log("finished")
-        // if (!deleted) console.log("Gagal");
-        // window.location.reload()
+document.addEventListener("click", async function (e) {
+    const classElement = e.target.classList
+    if (classElement.contains("btn-delete")) {
+        const id = parseInt(e.target.dataset.id);
+        const parentElement = e.target.parentNode.parentNode.parentNode.id;
+        const { isConfirmed } = await Swal.fire({
+            title: 'WARNING!',
+            text: 'Are you sure want to delete this item?',
+            icon: 'warning',
+            confirmButtonText: 'Ok',
+            showCancelButton: true
+        })
+
+        if (!isConfirmed) {
+            return
+        }
+
+        if (parentElement === "card-unfinished") {
+            deleteItem("data-unfinished", id)
+        } else {
+            deleteItem("data-finished", id)
+        }
+
+        window.location.reload()
+    } else if (classElement.contains("btn-mark")) {
+        const id = parseInt(e.target.dataset.id);
+        const parentElement = e.target.parentNode.parentNode.parentNode.id;
+        if (parentElement === "card-unfinished") {
+            markMessage("data-unfinished", "data-finished", id)
+        } else {
+            markMessage("data-finished", "data-unfinished", id)
+        }
+
+        window.location.reload()
     }
 })
 
-function deleteItem(key, id) {
+function markMessage(key, unotherKey, id) {
     const data = JSON.parse(localStorage.getItem(key));
-    console.log(data);
-    const newData = data.filter(d => d.id !== id);
-    console.log(newData);
+    let newData = data.filter(d => d.id !== id);
     localStorage.setItem(key, JSON.stringify(newData));
-
+    newData = data.find(d => d.id === id);
+    const anotherData = JSON.parse(localStorage.getItem(unotherKey));
+    newData = !anotherData ? [newData] : [...anotherData, newData]
+    localStorage.setItem(unotherKey, JSON.stringify(newData))
 }
 
-formAdd.addEventListener("submit", function (e) {
+function deleteItem(key, id) {
+    const data = JSON.parse(localStorage.getItem(key));
+    const newData = data.filter(d => d.id !== id);
+    localStorage.setItem(key, JSON.stringify(newData));
+}
+
+formAdd.addEventListener("submit", async function (e) {
     e.preventDefault();
 
     if (inputs[0].value === "" || inputs[1].value === "" || inputs[2].value === "") {
@@ -79,16 +114,17 @@ formAdd.addEventListener("submit", function (e) {
 
     data.isComplete ? saveData(data, "data-finished") : saveData(data, "data-unfinished")
     inputs.forEach(input => input.value = "")
-    window.location.reload();
-    setTimeout(() => {
-        if (!data.isComplete) {
-            const offsetYCard = containerUnfinished.offsetTop;
-            scrollingElement(offsetYCard)
-        } else {
-            const offsetYCard = containerFinished.offsetTop;
-            scrollingElement(offsetYCard)
-        }
-    }, 200);
+    const { isConfirmed } = await Swal.fire({
+        title: 'Success!',
+        text: "Succes add new book",
+        icon: 'success',
+        confirmButtonText: 'Ok',
+    })
+
+    if (isConfirmed) {
+        window.location.reload();
+    }
+
 })
 
 function isRegistered(title, author) {
@@ -101,7 +137,6 @@ function isRegistered(title, author) {
 
     if (dataUnfinished) {
         const isRegist = findUser(dataUnfinished, user)
-        console.log(isRegist);
         if (isRegist) {
             return "Data already exist on Unifinished books"
         }
@@ -134,15 +169,7 @@ function findUser(data, user) {
     return data.find(d => d.title.toLowerCase() + d.author.toLowerCase() === user)
 }
 
-function scrollingElement(offsetTop) {
-    window.scrollTo({
-        top: offsetTop,
-        behavior: "smooth"
-    })
-}
-
 function saveData(data, key) {
-    console.log(data, key);
     const isFilled = JSON.parse(localStorage.getItem(key));
     if (!isFilled) {
         localStorage.setItem(key, JSON.stringify([data]))
@@ -156,14 +183,14 @@ function getData(key) {
     return JSON.parse(localStorage.getItem(key));
 }
 
-function setCardUi(data) {
+function setCardUi(data, type) {
     return `
     <div class="card">
         <h5>${data.title}</h5>
         <p>Written by : <span class="written">${data.author}</span></p>
         <p>Year : <span class="year">${data.year}</span></p>
         <div class="card-control">
-            <button>Mark as read</button>
+            <button class="btn-mark" data-id="${data.id}">Mark as ${type}</button>
             <button class="btn-delete" data-id="${data.id}">Delete</button>
         </div>
     </div>
