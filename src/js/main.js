@@ -215,7 +215,7 @@ formAdd.addEventListener("submit", async function (e) {
         id: Date.now(),
         title: inputs[0].value,
         author: inputs[1].value,
-        year: inputs[2].value,
+        year: parseInt(inputs[2].value),
         isComplete: inputs[3].checked
     }
 
