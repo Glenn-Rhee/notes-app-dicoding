@@ -8,11 +8,13 @@ const btnDelete = document.querySelectorAll(".btn-delete");
 const nullDataUnfinished = document.querySelector("#no-data-unfinished");
 const nullDataFinished = document.querySelector("#no-data-finished");
 const errorInput = document.querySelector(".error-input");
+const searchInput = document.querySelector("#search");
+const searchBtn = document.querySelector("#search-btn");
+const errorSearch = document.querySelector(".error-search");
 
 (() => {
     let cards = '';
     let data = getData("data-unfinished");
-
     if (!data || data.length === 0) {
         nullDataUnfinished.classList.add("show")
     } else {
@@ -32,6 +34,67 @@ const errorInput = document.querySelector(".error-input");
     }
 })()
 
+
+searchBtn.addEventListener("click", function (e) {
+    const query = searchInput.value.toLowerCase();
+    if (query === "" || query.indexOf(" ") !== -1) {
+        errorSearch.innerHTML = "Please fill in the search field";
+        errorSearch.classList.add("show");
+        return
+    }
+
+    errorSearch.classList.remove("show");
+    const result = findBook(query)
+    console.log(result);
+})
+
+function findBook(query) {
+    const booksUn = JSON.parse(localStorage.getItem("data-unfinished"));
+    const booksFin = JSON.parse(localStorage.getItem("data-finished"));
+    let q = query.charAt(0).toUpperCase();
+    q = q + query.slice(1)
+
+    if (!booksUn && booksFin) return "No data";
+
+    if (booksUn) {
+        const data = filterQueryBook(booksUn, query)
+        if (data.length > 0) {
+            if (booksFin) {
+                const data2 = filterQueryBook(booksFin, query);
+                if (data2.length > 0) {
+                    return [...data, ...data2]
+                }
+
+                return data
+            }
+
+            return data
+        }
+
+        if (booksFin) {
+            const data = filterQueryBook(booksFin, query)
+            if (data.length > 0) return data;
+
+            return `No data exist with ${q} querry`
+        }
+        return `No data exist with ${q} querry`
+    } else {
+        if (booksFin) {
+            const data = filterQueryBook(booksFin, query);
+            if (data.length > 0) return data;
+
+            return `No data exist with ${q} querry`
+        }
+
+        return `No data exist with ${q} querry`
+    }
+
+}
+
+
+function filterQueryBook(data, query) {
+    return data.filter(d => d.title.toLowerCase().includes(query))
+}
 
 document.addEventListener("click", async function (e) {
     const classElement = e.target.classList
@@ -75,6 +138,7 @@ function markMessage(key, unotherKey, id) {
     let newData = data.filter(d => d.id !== id);
     localStorage.setItem(key, JSON.stringify(newData));
     newData = data.find(d => d.id === id);
+    newData = { ...newData, isComplete: !newData.isComplete }
     const anotherData = JSON.parse(localStorage.getItem(unotherKey));
     newData = !anotherData ? [newData] : [...anotherData, newData]
     localStorage.setItem(unotherKey, JSON.stringify(newData))
@@ -89,7 +153,7 @@ function deleteItem(key, id) {
 formAdd.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    if (inputs[0].value === "" || inputs[1].value === "" || inputs[2].value === "") {
+    if (inputs[0].value === "" || inputs[0].value.indexOf(" ") !== -1 || inputs[1].value === "" || inputs[1].value.indexOf(" ") !== -1 || inputs[2].value === "" || inputs[2].value.indexOf(" ") !== -1) {
         errorInput.innerHTML = "Title, Author, and year of realease are required!";
         errorInput.classList.add("show");
         return

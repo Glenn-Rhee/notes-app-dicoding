@@ -141,6 +141,17 @@ body {
     margin-bottom: 12px;
 }
 
+.search-book .error-search {
+    color: rgb(106, 11, 11);
+    font-weight: 400;
+    font-size: 18px;
+    display: none;
+}
+
+.search-book .error-search.show {
+    display: block;
+}
+
 .input-group button {
     padding: 8px 2px;
     cursor: pointer;
@@ -155,7 +166,7 @@ body {
 }
 
 .add-book .input-form .error-input {
-    color: rgb(138, 0, 0);
+    color: rgb(116, 0, 0);
     font-weight: 500;
     font-size: 20px;
     display: none;
