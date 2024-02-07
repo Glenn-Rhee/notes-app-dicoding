@@ -11,6 +11,7 @@ const errorInput = document.querySelector(".error-input");
 const searchInput = document.querySelector("#search");
 const searchBtn = document.querySelector("#search-btn");
 const errorSearch = document.querySelector(".error-search");
+const regex = /^\S+(?:\s*\S+)*$/;
 
 (() => {
     let cards = '';
@@ -35,17 +36,57 @@ const errorSearch = document.querySelector(".error-search");
 })()
 
 
-searchBtn.addEventListener("click", function (e) {
+function searchQuerry() {
     const query = searchInput.value.toLowerCase();
-    if (query === "" || query.indexOf(" ") !== -1) {
+    if (query === "" || !regex.test(query)) {
         errorSearch.innerHTML = "Please fill in the search field";
         errorSearch.classList.add("show");
         return
     }
 
     errorSearch.classList.remove("show");
-    const result = findBook(query)
-    console.log(result);
+    const result = findBook(query);
+    const typeResult = typeof result === "string"
+    if (typeResult) {
+        errorSearch.innerHTML = result
+        errorSearch.classList.add("show");
+        return;
+    }
+
+    const unfinishedBook = result.filter(d => d.isComplete === false)
+    const finishBook = result.filter(d => d.isComplete === true)
+    cardUnfinished.innerHTML = '';
+    let cards = ''
+    if (unfinishedBook.length === 0) {
+        nullDataUnfinished.classList.add("show")
+    } else {
+        unfinishedBook.forEach(e => cards += setCardUi(e, "read"))
+        cardUnfinished.innerHTML = cards;
+    }
+
+    cardFinished.innerHTML = '';
+    cards = '';
+    if (finishBook.length === 0) {
+        nullDataFinished.classList.add("show-finished")
+    } else {
+        finishBook.forEach(e => cards += setCardUi(e, "unread"));
+        cardFinished.innerHTML = cards;
+    }
+
+}
+
+searchBtn.addEventListener("click", searchQuerry)
+
+searchInput.addEventListener("keyup", function (e) {
+    if (e.target.value === "") {
+        window.location.reload()
+    }
+
+    if (e.key === "Enter") {
+        console.log("ok");
+        searchQuerry()
+    }
+
 })
 
 function findBook(query) {
@@ -119,7 +160,17 @@ document.addEventListener("click", async function (e) {
             deleteItem("data-finished", id)
         }
 
-        window.location.reload()
+        const result = await Swal.fire({
+            title: 'Success!',
+            text: "Succes Delete book",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+        })
+
+        if (result.isConfirmed) {
+            window.location.reload()
+        }
+
     } else if (classElement.contains("btn-mark")) {
         const id = parseInt(e.target.dataset.id);
         const parentElement = e.target.parentNode.parentNode.parentNode.id;
@@ -153,7 +204,7 @@ function deleteItem(key, id) {
 formAdd.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    if (inputs[0].value === "" || inputs[0].value.indexOf(" ") !== -1 || inputs[1].value === "" || inputs[1].value.indexOf(" ") !== -1 || inputs[2].value === "" || inputs[2].value.indexOf(" ") !== -1) {
+    if (inputs[0].value === "" || !regex.test(inputs[0].value) || inputs[1].value === "" || !regex.test(inputs[1].value) || inputs[2].value === "" || !regex.test(inputs[2].value)) {
         errorInput.innerHTML = "Title, Author, and year of realease are required!";
         errorInput.classList.add("show");
         return
